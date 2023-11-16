@@ -1,0 +1,117 @@
+.body {
+    background-colorbackground: #000000;
+    background: linear-gradient(140deg,#000000 0%, #485d48 80%);
+    background: -webkit-linear-gradient(140deg,#000000 0%, #485d48 80%);
+    background: -moz-linear-gradient(140deg,#000000 0%, #485d48 80%);;
+    color: #fff;
+}
+
+nav {
+    background-image: url("../images/img-nav.jpg");
+    width: 100vw;
+    border-bottom: none;
+    height: 15vh;
+    display: flex;
+    color: #ffffff;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.stylo_nav {
+
+    color: #ffffff;
+    font-size: 50px;
+
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.navbar-toggler-icon{
+    background-color: lightblue;
+}
+
+.titulo {
+
+    background-size: cover;
+    background-position: center;
+    height: 25vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo h1 {
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+.titulo p {
+    font-size: 24px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+display: flex;
+flex-wrap: wrap;
+}
+
+.container-nav {
+    margin-top: 50px;
+}
+
+.container-div {
+    margin-top: 50px;
+}
+
+.card {
+    background-color: #222;
+    color: #fff;
+    border: none;
+    margin: 5px;
+    display: flex;
+    align-content: space-between;
+}
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #ff6600;
+    color: #fff;
+    font-size: 19px;
+    border-radius: 2%
+}
+
+.btn_agregados {    background-color: #007e33;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 0;
+    
+}
+
+
+.btn:hover {
+    background-color: #34b391;
+}
