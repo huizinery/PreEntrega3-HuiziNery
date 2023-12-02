@@ -1,215 +1,126 @@
-alert("Bienvenido a TomaDos, acceso permitido solo a mayores de 18 años"); // AVISO DE EDAD MINIMA PARA INGRESAR
+//----------------------------USO DE LIBRERIA SWEET ALERT AL INGRESO DE LA PAGINA--------//
 
-//--------------------------- ESTRUCTURA DE LA CLASS
-class Producto {
-  constructor(nombre, categoria, precio, stock, img) {
-    this.nombre = nombre;
-    this.categoria = categoria;
-    this.precio = precio;
-    this.stock = stock;
-    this.img = img;
-  }
-}
-//----------PRODUCTOS AGREGADOS
+Swal.fire({
+  title: 'Venta exclusiva a mayores de 18 años!',
+  text: 'Tomas Dos recomienda el consumo de alcohol con moderacíon',
+  icon: 'warning',
+  confirmButtonText: 'Soy Mayor +18 años',
+  confirmButtonColor:'#0099ff',
+  showCloseButton: 'true'
+}) 
 
-const productos = [
-  new Producto(
-    "DV Catena Zapata Malbec",
-    "Vinos tinto",
-    6000,
-    88,
-    "../images/img1.jpg"
-  ),
-
-  new Producto(
-    "Luigi Bosca Malbec",
-    "Vinos tinto",
-    5000,
-    50,
-    "../images/img2.webp"
-  ),
-
-  new Producto(
-    "Trapiche Alaris Dulce",
-    "Vinos blanco",
-    2500,
-    75,
-    "../images/img3.webp"
-  ),
-
-  new Producto(
-    "Norton Cosecha Tardia Dulce",
-    "vinos blanco",
-    2100,
-    25,
-    "../images/img4.jpg"
-  ),
-
-  new Producto(
-    "Trumpeter Malbec",
-    "Vinos tinto",
-    3000,
-    10,
-    "../images/img5.jpg"
-  ),
-
-  new Producto(
-    "Quilmes 1L",
-    "Cervezas",
-    1100,
-    100,
-    "../images/img6.jpg"
-  ),
-
-  new Producto(
-    "Stella Artois",
-    "Cervezas",
-    1500,
-    80,
-    "../images/img7.jpg"
-  ),
-
-  new Producto("Patagonia",
-    "Cervezas",
-    1400,
-    60,
-    "../images/img8.jpg"
-  ),
-
-  new Producto("Beefeatear",
-    "Gin",
-    14000,
-    50,
-    "../images/img9.jpg"
-  ),
-
-  new Producto(
-    "Ginkgo Patagonia",
-    "Gin",
-    2599,
-    5,
-    "../images/img10.jpg"
-  ),
-
-  new Producto(
-    "Branca 750ml",
-    "Fernet",
-    5000,
-    200,
-    "../images/img11.png"
-  ),
-
-  new Producto(
-    "Buhero Negro",
-    "Fernet",
-    3000,
-    100,
-    "../images/img12.jpg"
-  ),
-];
-
-//-------------------------------------------ACCEDE AL .CONTAINER QUE ES LA CLASE DEL DIV DONDE VA A AGREGAR LAS CARDS
+// -----------------ACCEDE AL .CONTAINER QUE ES LA CLASE DEL DIV DONDE VA A AGREGAR LAS CARDS----//
 
 const container = document.querySelector(".container");
 
-//FOREACH
-productos.forEach((producto, index) => {
+//------------------------USO DE FETCH PARA OBTENER LOS PRODUCTOS DEL ARCHIVO .JSON ---------//
+const obtenerCatalogo = async () => {
+  try {
+    const response = await fetch('./js/catalogo.json');
+    const data = await response.json();
+    return data.productos;
+  } catch (error) {
+    console.error('Error al obtener el catálogo:', error);
+    return [];
+  }
+};
 
-  //----------------------------------------------------ELEMENTOS CREADOS TIPO DIV Y AGREGADO DE CLASS: MUCHAS CLASES SON DE BOOSTRAP
+// -----------------------ASYNC PARA MOSTRAR LOS PRODUCTOS Y CREAR LAS TARJETAS CON LAS BEBIDAS-----//
 
-  const divCol = document.createElement("div");
-  divCol.classList.add("col-md-4");
+const imprimirProductos = async () => {
+  const productos = await obtenerCatalogo();
 
-  const divCard = document.createElement("div");
-  divCard.classList.add("card");
+  productos.forEach((producto, index) => {
+    const divCol = document.createElement("div");
+    divCol.classList.add("col-md-4");
 
-  const divCardBody = document.createElement("div");
-  divCardBody.classList.add("card-body");
+    const divCard = document.createElement("div");
+    divCard.classList.add("card");
 
-  //----------------------------------------------------------------CREAR ELEMENTO CREADO TIPO IMG
+    const divCardBody = document.createElement("div");
+    divCardBody.classList.add("card-body");
 
-  const img = document.createElement("img");
+    const img = document.createElement("img");
+    img.src = producto.img;
+    img.classList.add("card-img-top");
 
-  img.src = producto.img; // para que el src de la etiqueta imagen tome como valor el string de la ruta , creado como dato del objeto
+    const h5 = document.createElement("h5");
+    h5.classList.add("card-title");
+    h5.textContent = `${producto.nombre}`;
 
-  img.classList.add("card-img-top");
+    const p = document.createElement("p");
+    p.classList.add("card-text");
+    p.textContent = `Precio: $${producto.precio}\nCategoría: ${producto.categoria}`;
 
-  //----------------------------------------------------------------CREAR ELEMENTO TIPO H5 
-  const h5 = document.createElement("h5");
-  h5.classList.add("card-title");
-  h5.textContent = `${producto.nombre}`;
+    const a = document.createElement("a");
+    a.href = "#";
+    a.classList.add("btn");
+    a.textContent = "Agregar al carrito";
 
-  //----------------------------------------------------------------CREAR ELEMENTO TIPO PARRAFO 
-  const p = document.createElement("p");
-  p.classList.add("card-text");
-  p.textContent = `Precio: $${producto.precio}\nCategoría: ${producto.categoria}`;
+    a.addEventListener("click", () => {
+      Swal.fire({
+        title: 'Ingrese la cantidad deseada:',
+        input: 'number',
+        inputAttributes: {
+          min: 1,
+          step: 1
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Agregar al carrito',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: (cantidad) => {
+          if (cantidad > 0) {
+            const datosCompra = {
+              producto: producto.nombre,
+              cantidad: parseInt(cantidad),
+              precio: producto.precio,
+            };
 
-  //----------------------------------------------------------------CREAR ELEMENTO TIPO LINK
-  const a = document.createElement("a");
-  a.href = "#";
-  a.classList.add("btn");
-  a.textContent = "Agregar al carrito";
+            let cartData = [];
+            const recuperoCartData = localStorage.getItem("cartData");
 
-  //-------------------------------------------------------------- USO DE EVENTO CLICK
+            if (recuperoCartData) {
+              cartData = JSON.parse(recuperoCartData);
+            }
 
-  a.addEventListener("click", () => {
-    const cantidad = prompt("Ingrese la cantidad deseada:");
+            cartData.push(datosCompra);
+            localStorage.setItem("cartData", JSON.stringify(cartData));
 
-    if (cantidad !== null && !isNaN(cantidad) && cantidad > 0) {  //si ingresa un valor que no ni null, ni es algo no número y es mayor a cero
-      const datosCompra = {
-        producto: producto.nombre,
-        cantidad: parseInt(cantidad),
-        precio: producto.precio,
-      };
+            Swal.fire({
+              icon: 'success',
+              title: 'Producto agregado al carrito de compras',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              verProductosAgregados.click();
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Cantidad inválida',
+              text: 'Por favor, ingrese un número válido.',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+        }
+      });
+    });
 
-      //---------------------PARA RECUPERAR LOS DATOS QUE YA AGREGÓ EL USUARIO AL CARRITO, LE AGREGA LOS NUEVOS Y LO VUELVE A ENVIAR AL LOCALSTORAGE
+    divCardBody.appendChild(h5);
+    divCardBody.appendChild(p);
+    divCardBody.appendChild(a);
 
-      let cartData = [];//variable vacia para ir acumulando
+    divCard.appendChild(img);
+    divCard.appendChild(divCardBody);
 
-      const recuperoCartData = localStorage.getItem("cartData");
+    divCol.appendChild(divCard);
 
-
-      if (recuperoCartData) { //mira si hay algo dentro de recupero, en caso de haber,lo parsea de json a objeto asi lo guarda en cartData
-        cartData = JSON.parse(recuperoCartData);
-      }
-
-
-      cartData.push(datosCompra);//empuja los nuevos productos que van agregando el usuario dentro la variable acumulativa cartData.
-
-
-      localStorage.setItem("cartData", JSON.stringify(cartData));//envia la info actualizada al localstorage
-
-
-      const productosAgregadosDiv = document.querySelector(".productos-agregados");
-
-      const productoAgregadoLi = document.createElement("li");
-      productoAgregadoLi.textContent = `Producto: ${datosCompra.producto}, Cantidad: ${datosCompra.cantidad}, Precio: $${datosCompra.precio}`;
-
-
-      alert("Producto agregado al carrito de compras");
-    } else {
-      alert("Cantidad inválida. Por favor, ingrese un número válido.");
-    }
+    container.appendChild(divCol);
   });
+};
 
-  //AGREGADO DE LOS ELEMENTOS DENTRO DEL LUGAR QUE LE CORRESPONDE
-
-  divCardBody.appendChild(h5);
-  divCardBody.appendChild(p);
-  divCardBody.appendChild(a);
-
-  divCard.appendChild(img);
-  divCard.appendChild(divCardBody);
-
-  divCol.appendChild(divCard);
-
-  container.appendChild(divCol);
-});
-
-
-
-// -----------------------------------------------------------OPCION DE "VER PRODUCTOS AGREGADOS"
-
+// -------------------------BOTON  DE "VER PRODUCTOS AGREGADOS"------------------//
 
 const verProductosAgregados = document.createElement("button");
 
@@ -218,90 +129,102 @@ verProductosAgregados.textContent = "Ver productos agregados";
 verProductosAgregados.classList.add("btn_agregados", "btn-success");
 
 verProductosAgregados.addEventListener("click", () => {
-  const cartData = localStorage.getItem("cartData");
-  if (cartData) {
-    const productosAgregados = JSON.parse(cartData);
-    const productosAgregadosDiv = document.querySelector(".productos-agregados");
+  const productosAgregadosDiv = document.querySelector(".productos-agregados");
+  const recuperoCartData = localStorage.getItem("cartData");
 
-    productosAgregadosDiv.innerHTML = ""; // Limpiar el contenido anterior
+  if (recuperoCartData) {
+    const cartData = JSON.parse(recuperoCartData);
+    productosAgregadosDiv.innerHTML = ""; //BARRIDO DE CONTENIDO PREVIO
 
-    const ul = document.createElement("ul");
-    ul.classList.add("list-group");
-
+//--------------------------DECLARACIÓN VARIABLE GENERAL -----------------------------//
     let montoTotal = 0;
-    productosAgregados.forEach((producto, index) => {
-      const subtotal = producto.cantidad * producto.precio;
-      montoTotal += subtotal;
 
-      const li = document.createElement("li");
-      li.classList.add("list-group-item");
-      li.innerHTML = `
-        <strong>Producto:</strong> ${producto.producto}<br>
-        <strong>Cantidad:</strong> ${producto.cantidad}<br>
-        <strong>Precio:</strong> $${producto.precio}<br>
-        <strong>Subtotal:</strong> $${subtotal}
-      `;
-
-
-      const quitarProductoBtn = document.createElement("button");
-      quitarProductoBtn.textContent = "Quitar";
-      quitarProductoBtn.classList.add("btn", "btn-danger", "btn-sm"); // Aplicar estilos de Bootstrap al botón
-      quitarProductoBtn.addEventListener("click", () => {
-        productosAgregados.splice(index, 1); // Eliminar el producto de la lista
-        localStorage.setItem("cartData", JSON.stringify(productosAgregados)); // Actualizar el local storage
-        verProductosAgregados.click(); // Volver a mostrar la lista de productos agregados
+    cartData.forEach((item, index) => {
+      const productoAgregadoLi = document.createElement("li");
+      productoAgregadoLi.textContent = `Producto: ${item.producto}, Cantidad: ${item.cantidad}, Precio: $${item.precio}`;
+//--------------------------- PARA ELIMINIAR PRODUCTOS ANTES DE CONFIRMAR LA COMPRA---------------//
+      const eliminarBtn = document.createElement("button");
+      eliminarBtn.textContent = "Eliminar";
+      eliminarBtn.classList.add("btn_eliminar", "btn-danger");
+      eliminarBtn.addEventListener("click", () => {
+        cartData.splice(index, 1);
+        localStorage.setItem("cartData", JSON.stringify(cartData));
+        verProductosAgregados.click();
       });
 
-      li.appendChild(quitarProductoBtn);
-      ul.appendChild(li);
+      productoAgregadoLi.appendChild(eliminarBtn);
+      productosAgregadosDiv.appendChild(productoAgregadoLi);
+
+      montoTotal += item.precio * item.cantidad;
     });
 
-    productosAgregadosDiv.appendChild(ul);
+    const montoTotalDiv = document.createElement("div");
+    montoTotalDiv.textContent = `Monto Total: $${montoTotal.toFixed(2)}`;
+    productosAgregadosDiv.appendChild(montoTotalDiv);
 
-    const montoTotalP = document.createElement("p");
-    montoTotalP.innerHTML = `<strong>Monto total:</strong> $${montoTotal}`;
-    productosAgregadosDiv.appendChild(montoTotalP);
+    //----------------------------------BOTON DE CONFIRMACION DEL PEDIDO----------------//
+    const enviarPedidoBtn = document.createElement("button");
+    enviarPedidoBtn.textContent = "CONFIRMAR PEDIDO";
+    enviarPedidoBtn.classList.add("btn_enviar", "btn-primary");
+    enviarPedidoBtn.addEventListener("click", () => {
+      confirmarCompra();
+
+      // Vaciar la lista de "Ver productos agregados" después de confirmar la compra
+      productosAgregadosDiv.innerHTML = "";
+    });
+    productosAgregadosDiv.appendChild(enviarPedidoBtn);
   } else {
-    alert("No hay productos agregados");
+    Swal.fire({
+      icon: 'info',
+      title: 'Carrito vacío',
+      text: 'Puedes elegir la bebida que quieras y agregarlo a tu carrito',
+      confirmButtonText: 'Aceptar'
+    });
   }
 });
 
 document.querySelector("body").appendChild(verProductosAgregados);
 
-//----------------------------------------------------------- BOTON ENVIAR/CONFIRMAR COMPRA
+imprimirProductos();//
 
+// ----------------------------FUNCION PARA CONFIRMAR LA COMPRA----------------------//
+const confirmarCompra = () => {
+  const recuperoCartData = localStorage.getItem("cartData");
 
-const enviarPedidoBtn = document.createElement("button");
-enviarPedidoBtn.textContent = "CONFIRMAR PEDIDO";
-enviarPedidoBtn.classList.add("btn_enviar", "btn-primary");
+  if (recuperoCartData) {
+    const cartData = JSON.parse(recuperoCartData);
 
-enviarPedidoBtn.addEventListener("click", () => {
+    if (cartData.length > 0) {
 
-  const cartData = localStorage.getItem("cartData");
+      localStorage.removeItem("cartData");
 
-  if (cartData) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Compra confirmada',
+        text: 'Su pedido ha sido confirmado. ¡Gracias por su compra!',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        verProductosAgregados.click();
 
-    const productosAgregados = JSON.parse(cartData);
+//----------------------VACIADO DE LA LISTA "VER PRODUCTOS AGREGADOS " LUEGO DE CONFIRMAR LA COMPRA-----//
 
-    console.log("Información del pedido:");
-    console.log(productosAgregados);
-
-    let montoTotal = 0;
-    productosAgregados.forEach((producto) => {
-      const subtotal = producto.cantidad * producto.precio;
-      montoTotal += subtotal;
-    });
-
-    console.log("Monto total del pedido: $" + montoTotal);
-
-    alert("Pedido enviado con éxito!");
-
-
-
+        const productosAgregadosDiv = document.querySelector(".productos-agregados");
+        productosAgregadosDiv.innerHTML = "";
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Carrito vacío',
+        text: 'No hay productos en el carrito para confirmar. Por favor, elija algún producto.',
+        confirmButtonText: 'Aceptar'
+      });
+    }
   } else {
-    alert("No hay productos en el carrito");
+    Swal.fire({
+      icon: 'info',
+      title: 'Carrito vacío',
+      text: 'No hay productos en el carrito para confirmar.',
+      confirmButtonText: 'Aceptar'
+    });
   }
-
-});
-
-document.querySelector(".productos-agregados").appendChild(enviarPedidoBtn);
+};

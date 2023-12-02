@@ -1,0 +1,88 @@
+{
+  "productos": [
+    {
+      "nombre": "DV Catena Zapata Malbec",
+      "categoria": "Vinos tinto",
+      "precio": 6000,
+      "stock": 88,
+      "img": "../images/img1.jpg"
+    },
+    {
+      "nombre": "Luigi Bosca Malbec",
+      "categoria": "Vinos tinto",
+      "precio": 5000,
+      "stock": 50,
+      "img": "../images/img2.webp"
+    },
+    {
+      "nombre": "Trapiche Alaris Dulce",
+      "categoria": "Vinos blanco",
+      "precio": 2500,
+      "stock": 75,
+      "img": "../images/img3.webp"
+    },
+    {
+      "nombre": "Norton Cosecha Tardia Dulce",
+      "categoria": "vinos blanco",
+      "precio": 2100,
+      "stock": 25,
+      "img": "../images/img4.jpg"
+    },
+    {
+      "nombre": "Trumpeter Malbec",
+      "categoria": "Vinos tinto",
+      "precio": 3000,
+      "stock": 10,
+      "img": "../images/img5.jpg"
+    },
+    {
+      "nombre": "Quilmes 1L",
+      "categoria": "Cervezas",
+      "precio": 1100,
+      "stock": 100,
+      "img": "../images/img6.jpg"
+    },
+    {
+      "nombre": "Stella Artois",
+      "categoria": "Cervezas",
+      "precio": 1500,
+      "stock": 80,
+      "img": "../images/img7.jpg"
+    },
+    {
+      "nombre": "Patagonia",
+      "categoria": "Cervezas",
+      "precio": 1400,
+      "stock": 60,
+      "img": "../images/img8.jpg"
+    },
+    {
+      "nombre": "Beefeatear",
+      "categoria": "Gin",
+      "precio": 14000,
+      "stock": 50,
+      "img": "../images/img9.jpg"
+    },
+    {
+      "nombre": "Ginkgo Patagonia",
+      "categoria": "Gin",
+      "precio": 2599,
+      "stock": 5,
+      "img": "../images/img10.jpg"
+    },
+    {
+      "nombre": "Branca 750ml",
+      "categoria": "Fernet",
+      "precio": 5000,
+      "stock": 200,
+      "img": "../images/img11.png"
+    },
+    {
+      "nombre": "Buhero Negro",
+      "categoria": "Fernet",
+      "precio": 3000,
+      "stock": 100,
+      "img": "../images/img12.jpg"
+    }
+  ]
+}
